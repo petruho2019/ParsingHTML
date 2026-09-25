@@ -1,0 +1,14 @@
+{
+  "Servers": {
+    "ParsingHTML": {
+      "Name": "ParsingHTML server",
+      "Group": "Group 1",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "ParsingHTML",
+      "Username": "admin",
+      "SSLMode": "prefer",
+      "PassFile": "/var/lib/pgadmin/.pgpass"
+    }
+  }
+}

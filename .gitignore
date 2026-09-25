@@ -1,0 +1,9 @@
+# Postgresql
+/pgdata/
+/pgadmin/
+
+# vs code
+/obj/
+
+# asp.net
+/bin/
