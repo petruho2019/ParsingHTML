@@ -8,7 +8,7 @@
       "MaintenanceDB": "ParsingHTML",
       "Username": "admin",
       "SSLMode": "prefer",
-      "PassFile": "/var/lib/pgadmin/.pgpass"
+      "PassFile": "/pgadmin4/pgpass"
     }
   }
 }

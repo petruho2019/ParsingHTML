@@ -10,7 +10,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - /var/lib/postgresql/data/pgdata:/var/lib/postgresql/data/pgdata
+      - ./pgdata:/var/lib/postgresql/data/pgdata
     networks:
       - app
     healthcheck:
@@ -27,14 +27,17 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@example.com}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-postgres_password}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-pgadmin@example.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-postgres_password}
       PGADMIN_CONFIG_SERVER_MODE: "False"
       PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
       PGADMIN_REPLACE_SERVERS_ON_STARTUP: "True"
-      PGPASS_FILE: /pgadmin4/pgpass
+      PGPASSFILE: /pgadmin4/pgpass
+    # entrypoint: ["/bin/sh", "-c"]
+    # command:
+      # - cp /pgadmin4/pgpass /tmp/pgpass && chmod 600 /tmp/pgpass && exec /entrypoint.sh
     volumes:
-      - /var/lib/pgadmin:/var/lib/pgadmin
+      - ./pgadmin:/var/lib/pgadmin
       - ./servers.json:/pgadmin4/servers.json:ro
       - ./pgpass:/pgadmin4/pgpass:ro
     ports:
@@ -47,13 +50,19 @@ services:
     container_name: ParsingHTML
     image: parsinghtml:latest
     build: 
-      context: .
+      context: src/
       dockerfile: dockerfile
     depends_on:
       postgres:
         condition: service_healthy
     ports: 
       - 8090:80
+
+    volumes:
+      - ./src:/src
+
+    working_dir: /src
+
     environment:
       ConnectionStrings__DefaultConnection: ${DB_CONNECTION_STRING:-Server=postgres;Database=ParsingHTML;Port=5432;Password=admin;User Id=admin;SSLMode=Prefer}
       ASPNETCORE_URLS: http://+:80
