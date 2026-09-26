@@ -14,7 +14,7 @@ services:
     networks:
       - app
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-admin} -d ${DB_NAME:-ParsingHTML}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME:-admin} -d ${DB_NAME:-ParsingHTML}" ]
       interval: 7s
       timeout: 10s
       retries: 5
@@ -38,21 +38,21 @@ services:
       - ./servers.json:/pgadmin4/servers.json:ro
       - ./pgpass:/pgadmin4/pgpass:ro
     ports:
-      - 5050:80
+      - 8080:80
     networks:
       - app
     restart: unless-stopped
 
-  app: 
+  app:
     container_name: ParsingHTML
     image: parsinghtml:latest
-    build: 
+    build:
       context: src/
       dockerfile: dockerfile
     depends_on:
       postgres:
         condition: service_healthy
-    ports: 
+    ports:
       - 8090:80
 
     volumes:
@@ -65,7 +65,7 @@ services:
       ASPNETCORE_URLS: http://+:80
     networks:
       - app
-    
+
 volumes:
   pgdata:
     driver: local
