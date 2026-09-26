@@ -33,9 +33,6 @@ services:
       PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
       PGADMIN_REPLACE_SERVERS_ON_STARTUP: "True"
       PGPASSFILE: /pgadmin4/pgpass
-    # entrypoint: ["/bin/sh", "-c"]
-    # command:
-      # - cp /pgadmin4/pgpass /tmp/pgpass && chmod 600 /tmp/pgpass && exec /entrypoint.sh
     volumes:
       - ./pgadmin:/var/lib/pgadmin
       - ./servers.json:/pgadmin4/servers.json:ro

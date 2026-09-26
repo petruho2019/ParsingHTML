@@ -3,7 +3,7 @@
 /pgadmin/
 
 # vs code
-/obj/
+/src/obj/
 
 # asp.net
-/bin/
+/src/bin/
