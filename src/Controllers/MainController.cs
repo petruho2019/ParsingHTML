@@ -41,14 +41,13 @@ public class MainController(IValidator<ParseRequestModel> validator, IHtmlElemen
         var decodedHtml = Encoding.UTF8.GetString(Convert.FromBase64String(request.PageB64));
         var encodedUrl = Encoding.UTF8.GetString(Convert.FromBase64String(request.UrlB64));
 
-        var elements = await GetElementsByCssSelectorFromHtml(decodedHtml, request.Selector);
+        var elements = GetElementsByCssSelectorFromHtml(decodedHtml, request.Selector);
 
         var htmlElements = elements.Select(e => new HtmlElement()
         {
             AttributeValue = e.Attributes[request.Attribute]!.Value,
-            HtmlValue = e.TextContent
+            HtmlValue = e.InnerHtml.Trim()
         });
-
         var affected = await AddElementsToDb(htmlElements);
 
         var emails = htmlService.GetEmailsFromHtml(decodedHtml);
@@ -78,7 +77,7 @@ public class MainController(IValidator<ParseRequestModel> validator, IHtmlElemen
         return await elementsRepository.AddElementsAsync(htmlElements);
     }
 
-    private async Task<IHtmlCollection<IElement>> GetElementsByCssSelectorFromHtml(string decryptedHtml, string selector)
+    private IHtmlCollection<IElement> GetElementsByCssSelectorFromHtml(string decryptedHtml, string selector)
     {
         var elements = htmlService.GetElementsByCssSelectorFromHtml(selector, decryptedHtml);
 
@@ -110,3 +109,9 @@ public class MainController(IValidator<ParseRequestModel> validator, IHtmlElemen
     }
 
 }
+
+// обфускация
+
+// Dapper, .net 10, psql
+// JQuery, bootstrap, glint
+//
